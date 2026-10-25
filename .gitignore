@@ -1,0 +1,24 @@
+# OS / editor junk
+.DS_Store
+Thumbs.db
+*.swp
+.idea/
+.vscode/
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# Node
+node_modules/
+
+# Logs / scratch
+*.log
+
+# Never commit real audit output (your actual network data stays private)
+real-audit-*
+*CONFIDENTIAL*
+inventory-*.json
+findings-*.json
