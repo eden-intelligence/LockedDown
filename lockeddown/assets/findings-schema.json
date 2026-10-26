@@ -1,0 +1,92 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "LockedDown — inventory & findings snapshot",
+  "description": "Machine-readable snapshot an audit writes (inventory-<date>.json / findings-<date>.json). The re-test skill diffs the newest snapshot against a fresh run to detect drift. Defensive data only: findings describe weaknesses, impact, and fixes — never exploit code.",
+  "type": "object",
+  "required": ["meta", "assets", "findings"],
+  "properties": {
+    "meta": {
+      "type": "object",
+      "required": ["household", "date", "scope"],
+      "properties": {
+        "household": { "type": "string", "description": "Client / household label from Phase 0." },
+        "date": { "type": "string", "format": "date", "description": "Audit date (YYYY-MM-DD)." },
+        "scope": { "type": "string", "description": "Subnet(s) / public IP audited, with authorization note." },
+        "vantage_points": {
+          "type": "array",
+          "items": { "type": "string", "enum": ["off-network-scan", "third-party-exposure", "inside-inference", "on-lan"] },
+          "description": "How the perimeter view was acquired (methodology.md)."
+        },
+        "health_score": { "type": "integer", "minimum": 0, "maximum": 100 },
+        "health_band": { "type": "string", "enum": ["Critical Risk", "High Risk", "Fair", "Good", "Strong"] },
+        "data_basis": { "type": "string", "enum": ["measured", "constructed-demo"], "description": "'constructed-demo' marks a sample run with no real network — never present it as measured." }
+      }
+    },
+    "assets": {
+      "type": "array",
+      "description": "One row per discovered host.",
+      "items": {
+        "type": "object",
+        "required": ["ip", "zone"],
+        "properties": {
+          "ip": { "type": "string" },
+          "mac": { "type": "string" },
+          "vendor": { "type": "string", "description": "MAC-OUI vendor." },
+          "hostname": { "type": "string" },
+          "make_model": { "type": "string", "description": "Resolved make/model from enrichment (mDNS/SNMP/NetBIOS/UPnP)." },
+          "id_confidence": { "type": "string", "enum": ["high", "medium", "low"] },
+          "type": { "type": "string", "enum": ["edge", "crown", "compute", "iot", "unknown"] },
+          "os_firmware": { "type": "string" },
+          "open_ports": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["port", "proto"],
+              "properties": {
+                "port": { "type": "integer" },
+                "proto": { "type": "string", "enum": ["tcp", "udp"] },
+                "service": { "type": "string" },
+                "version": { "type": "string" },
+                "exposure": { "type": "string", "enum": ["internet", "lan", "guest"] }
+              }
+            }
+          },
+          "zone": { "type": "string", "description": "Trust zone, e.g. 'main-flat', 'guest', 'iot-vlan'." },
+          "crown_jewel": { "type": "boolean", "default": false }
+        }
+      }
+    },
+    "findings": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "title", "severity", "likelihood", "impact", "evidence", "remediation"],
+        "properties": {
+          "id": { "type": "string", "description": "Stable id, also used as the graph node id (>=5 chars)." },
+          "title": { "type": "string" },
+          "severity": { "type": "string", "enum": ["Critical", "High", "Medium", "Low"] },
+          "likelihood": { "type": "string", "enum": ["High", "Medium", "Low"] },
+          "impact": { "type": "string", "description": "Blast radius in words — what falls, what it reaches." },
+          "asset_ref": { "type": "string", "description": "ip of the affected asset." },
+          "cve": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": { "type": "string", "pattern": "^CVE-[0-9]{4}-[0-9]{4,}$" },
+                "cvss": { "type": "number" },
+                "unauth_remote": { "type": "boolean" },
+                "on_cisa_kev": { "type": "boolean" },
+                "fixed_in": { "type": "string" }
+              }
+            }
+          },
+          "mitre": { "type": "array", "items": { "type": "string", "pattern": "^T[0-9]{4}(\\.[0-9]{3})?$" }, "description": "ATT&CK technique IDs for the hunt/detection path." },
+          "evidence": { "type": "string", "description": "The scan line / config / share listing that proves it." },
+          "provenance": { "type": "string", "enum": ["Observed", "Inferred", "Reported", "Assumed"] },
+          "remediation": { "type": "string", "description": "The specific fix. Every finding ends in an action." }
+        }
+      }
+    }
+  }
+}

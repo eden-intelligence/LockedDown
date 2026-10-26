@@ -166,8 +166,8 @@ verdict.
 ### Phase 7 (optional) — Build it into a presentation
 Read `references/presentation-deck.md`.
 After the report, **offer to package the audit as a client-style Google Slides deck** —
-only build it on a yes. The reference carries a consulting visual style (palette, type, and a
-12-slide flow) derived from a real threat-assessment engagement, built via the
+only build it on a yes. The reference carries Eden Intelligence's consulting deck style (palette, type, and a
+12-slide flow), built via the
 google-workspace connector (or a `.pptx` fallback with the pptx skill). The deck is
 **unbranded** on its body slides — it's the user's own assessment — and credits the skill
 only on a conversational closing slide (consulting offer + coffee/donation + GitHub star).

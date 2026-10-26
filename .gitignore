@@ -17,8 +17,9 @@ node_modules/
 # Logs / scratch
 *.log
 
-# Never commit real audit output (your actual network data stays private)
-real-audit-*
+# Audit output: scan results and reports describe a specific network.
+# Keep them out of git.
+*audit-report*
 *CONFIDENTIAL*
-inventory-*.json
-findings-*.json
+inventory-[0-9]*.json
+findings-[0-9]*.json

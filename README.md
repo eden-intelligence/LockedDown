@@ -24,15 +24,12 @@ an evidence/provenance trail for every exposure, MITRE ATT&CK hunt paths with de
 signals, a weighted health score, device-ID enrichment, CVE-reference lookup, egress/flow
 hunting, baseline/drift detection, and a machine-readable findings schema.
 
-See [`docs/competitive-comparison.md`](docs/competitive-comparison.md) for how LockedDown
-stacks up against other Claude skills and tools on the market.
-
 ## Install
 
 ### Claude Code / Claude Desktop (skills folder)
 
 ```bash
-git clone https://github.com/liaisb/LockedDown.git
+git clone https://github.com/eden-intelligence/LockedDown.git
 cp -R LockedDown/lockeddown ~/.claude/skills/
 cp -R LockedDown/lockeddown-retest ~/.claude/skills/
 ```
@@ -62,7 +59,6 @@ conversationally, and ends in a ranked report (plus an optional deck).
 ```
 lockeddown/                     # the testing skill (SKILL.md + references/ + assets/)
 lockeddown-retest/              # the companion re-test skill
-docs/competitive-comparison.md  # how LockedDown compares to the market
 dist/                           # prebuilt .skill packages
 ```
 
@@ -71,9 +67,7 @@ dist/                           # prebuilt .skill packages
 If LockedDown saved you some worry:
 
 - ⭐ **Star the repo** — it genuinely helps.
-- ☕ **Support on Ko-fi:** https://ko-fi.com/travisyounker
-- 🧭 **Want a human to go deeper, or test a bigger environment?** Eden Intelligence does
-  security consulting — reach out at `travis@eden-intelligence.com`.
+- ☕ **Support on Ko-fi:** https://ko-fi.com/edenintelligence
 
 ## License
 
