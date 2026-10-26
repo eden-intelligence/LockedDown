@@ -1,32 +1,27 @@
-# LockedDown — Home Network Testing Tool
+# LockedDown
 
-**LockedDown** is a pair of defensive security skills for Claude that test **your own**
-home network the way a security consultant would: find where it's weakest, see it the way
-an attacker on the public internet would, map it, and get a prioritized plan to fix it —
-then re-test to prove the fixes actually landed.
+A home network testing tool for Claude, by Eden Intelligence.
 
-Built by **Eden Intelligence**.
+I built LockedDown to answer a simple question about my own network: if someone wanted in,
+where would they start? It's two Claude skills. You talk to Claude, it runs the checks on
+your machine, explains what it finds in plain English, and gives you a short list of what
+to fix first. Come back later and it'll check whether your fixes stuck.
 
-> **Defensive only.** LockedDown identifies weaknesses, explains their impact, and tells
-> you how to close them. It does **not** produce exploit code, reverse shells, ransomware,
-> persistence, or detection-evasion — by design, even if asked. Only ever run it against a
-> network you own or administer.
+It's meant for networks you own or run. It finds problems and tells you how to fix them.
+It won't write exploits, malware, or anything for breaking into someone else's stuff, even
+if you ask.
 
-## What's inside
+## What's in here
 
-| Skill | What it does |
-|---|---|
-| **lockeddown** | The full test: perimeter (outside-in) → host/service discovery → lateral movement & segmentation → exploitability, CVE & blast-radius → pivotable Mermaid topology + attack-path graphs → ranked hardening report → optional consulting-style slide deck. |
-| **lockeddown-retest** | Companion follow-up: loads a prior LockedDown run, re-checks each finding (Closed / Partial / Open / Regressed), sweeps for new issues and drift, recomputes the health score, and shows a before → after delta. |
-
-Highlights: an outside-in perimeter methodology (test your own public IP from off-network),
-an evidence/provenance trail for every exposure, MITRE ATT&CK hunt paths with detection
-signals, a weighted health score, device-ID enrichment, CVE-reference lookup, egress/flow
-hunting, baseline/drift detection, and a machine-readable findings schema.
+- **lockeddown** is the main test. It looks at what your router exposes to the internet,
+  what's on your network and what each device is running, how far someone could get if one
+  device were compromised (that cheap smart plug, say), and which problems actually matter.
+  You get a ranked report with network diagrams, plus a slide deck if you want one.
+- **lockeddown-retest** is for after you've fixed things. It re-checks each finding from
+  your last run, marks what's fixed and what isn't, looks for anything new, and shows your
+  score before and after.
 
 ## Install
-
-### Claude Code / Claude Desktop (skills folder)
 
 ```bash
 git clone https://github.com/eden-intelligence/LockedDown.git
@@ -34,41 +29,48 @@ cp -R LockedDown/lockeddown ~/.claude/skills/
 cp -R LockedDown/lockeddown-retest ~/.claude/skills/
 ```
 
-Reload skills, then just ask — Claude triggers LockedDown automatically on requests like
-"test my home network" or "did my fixes work?"
+Start a new Claude Code session and it'll pick them up. If you'd rather upload skills in the
+Claude app, the packaged `.skill` files are in `dist/`.
 
-### Prepackaged `.skill` files
+## How to use it
 
-Prebuilt bundles are in [`dist/`](dist/) (`lockeddown.skill`, `lockeddown-retest.skill`)
-if your client installs from a `.skill` package.
+A full test is two passes: one from inside your network, then one from outside it. You need
+both. From inside, Claude can see your devices and your router settings. Only from outside
+can it see what the rest of the internet sees.
 
-## Usage
+**1. Start at home.** Get on your home Wi-Fi (or plug in), open Claude, and say something
+like "test my home network." Claude will confirm it's your network and ask a few questions:
+what router you have, what's connected, what you'd hate to lose. Then it will:
 
-Just ask, in plain language:
+- note your home's public IP address
+- go through your router settings with you (port forwards, UPnP, remote admin)
+- scan your local network and work out which devices are risky and how they connect
 
-- "Test my home network / find the weak points / what's exposed to the internet?"
-- "Map my network and show me the attack paths."
-- "Build the findings into a slide deck."
-- "Re-test my network — did my fixes work?"
+**2. Leave your network.** Once Claude has what it needs from the inside, it'll ask you to
+switch networks. Your phone's hotspot is the easiest option. A VPN works too, but check
+that your provider allows port scans. Guest Wi-Fi doesn't count, and neither does a VPN
+that connects back to your house. Either way your traffic still starts at home.
 
-LockedDown confirms it's your own network before any active scan, works through its phases
-conversationally, and ends in a ranked report (plus an optional deck).
+**3. Let it scan from outside.** Tell Claude you've switched. It checks that your IP really
+changed, then scans the home IP it saved in step 1 and nothing else. Whatever answers is
+what anyone on the internet can reach. Do this in the same session, because home IPs change
+now and then.
 
-## Repo layout
+**4. Get your results.** Reconnect at home whenever you like. Claude pulls it all into a
+report: what's exposed and why, diagrams of your network, and a fix list in priority order.
+Ask for a slide deck if you want one.
 
-```
-lockeddown/                     # the testing skill (SKILL.md + references/ + assets/)
-lockeddown-retest/              # the companion re-test skill
-dist/                           # prebuilt .skill packages
-```
+**Later:** once you've made fixes, say "re-test my network" and lockeddown-retest checks
+your work against the last report.
 
-## Support this project
+You don't have to do the whole thing at once. "Just check what's open from the internet" or
+"just map my network" work fine on their own.
 
-If LockedDown saved you some worry:
+## Support
 
-- ⭐ **Star the repo** — it genuinely helps.
-- ☕ **Support on Ko-fi:** https://ko-fi.com/edenintelligence
+If this helped you, a star on the repo helps other people find it. You can also buy me a
+coffee on Ko-fi: https://ko-fi.com/edenintelligence
 
 ## License
 
-[MIT](LICENSE) © 2026 Eden Intelligence
+MIT. See [LICENSE](LICENSE). © 2026 Eden Intelligence.

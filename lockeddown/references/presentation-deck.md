@@ -93,21 +93,18 @@ build toward the decision the deck is for (usually "do the weekend fixes").
 
 This is the only slide that mentions the maker. Dark green background, large cream
 `QUESTIONS?` headline, then a short, warm, first-person credit block underneath — written
-like a person talking, not corporate boilerplate. It credits the skill, offers consulting,
-offers a coffee/donation, and asks for a GitHub star.
+like a person talking, not corporate boilerplate. It credits the skill, links
+Ko-fi, and asks for a GitHub star. No consulting offer and no contact email.
 
 The maker's real links are the defaults, baked into the suggested copy below
-(Eden Intelligence — contact `travis@eden-intelligence.com`, Ko-fi
-`ko-fi.com/edenintelligence`, repo `github.com/eden-intelligence/LockedDown`).
-Use them as-is unless the user gives different ones in Phase 0. Keep it to ~4 short lines.
+(Eden Intelligence — Ko-fi `ko-fi.com/edenintelligence`, repo
+`github.com/eden-intelligence/LockedDown`).
+Use them as-is unless the user gives different ones in Phase 0. Keep it to ~3 short lines.
 Suggested copy (adapt the wording, keep the tone):
 
 > **QUESTIONS?**
 >
 > Thanks for reading. This assessment was put together with **LockedDown**, Eden Intelligence's home network testing tool.
->
-> Want a human to take it further — or run this across a bigger environment? I do security
-> consulting, so reach out at **travis@eden-intelligence.com**.
 >
 > If this saved you some worry, you can support my work on Ko-fi at **ko-fi.com/edenintelligence** — totally
 > optional, always appreciated.

@@ -105,6 +105,26 @@ interrogate one at a time):
 This frames the whole audit: the crown jewels are what you're ultimately protecting, and
 everything after measures how exposed those are.
 
+### Running order: inside first, then outside
+
+The phases are numbered in the order an attacker meets them, but you can't see the outside
+from inside, so run them with the user in two passes:
+
+1. **Inside pass (on the home network).** After Phase 0, record the household's public IP
+   (`curl -s https://api.ipify.org`) and note whether it's in `100.64.0.0/10` (CGNAT — an
+   outside scan then hits the carrier, not their router). Do the router-config side of
+   Phase 1 (forwards, UPnP table, remote admin, DMZ), then Phases 2–4. This tells you what
+   *should* be reachable from outside.
+2. **Switch vantage.** Ask the user to move this machine off the home network. A phone
+   hotspot is easiest; a commercial VPN works if its terms allow scanning. Guest Wi-Fi, or a
+   VPN that tunnels back into the home, doesn't count — traffic still starts inside. Wait
+   for the user to say they've switched, then re-check the current public IP: it must
+   differ from the recorded home IP before you scan anything.
+3. **Outside pass.** Run the Phase 1 external scan against the recorded home IP only, never
+   any other address. Do it in the same session; home IPs can change.
+4. **Finish.** The user can reconnect home for follow-up checks. Phases 5–7 (graphs, report,
+   deck) need no network access.
+
 ### Phase 1 — Perimeter: external attack surface
 Read `references/perimeter.md`.
 How an attacker gets from the internet onto the network at all: open/forwarded ports,
@@ -170,7 +190,7 @@ only build it on a yes. The reference carries Eden Intelligence's consulting dec
 12-slide flow), built via the
 google-workspace connector (or a `.pptx` fallback with the pptx skill). The deck is
 **unbranded** on its body slides — it's the user's own assessment — and credits the skill
-only on a conversational closing slide (consulting offer + coffee/donation + GitHub star).
+only on a conversational closing slide (Ko-fi link + GitHub star).
 The same guardrail
 applies to the deck: findings, impact, and fixes on the slides — never exploit code,
 ransomware, persistence, or intrusion steps.
